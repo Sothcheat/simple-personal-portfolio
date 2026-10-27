@@ -1,34 +1,38 @@
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig, lazyPlugins } from "vite-plus";
 
 // https://vite.dev/config/
 export default defineConfig({
-  staged: {
-    "*": "vp check --fix",
-  },
-  fmt: {},
-  lint: {
-    plugins: ["react", "oxc"],
-    rules: {
-      "react/rules-of-hooks": "error",
-      "react/only-export-components": [
-        "warn",
-        {
-          allowConstantExport: true,
+    staged: {
+        "*": "vp check --fix",
+    },
+    fmt: {
+        trailingComma: "all",
+        tabWidth: 4,
+    },
+    lint: {
+        plugins: ["react", "oxc"],
+        rules: {
+            "react/rules-of-hooks": "error",
+            "react/only-export-components": [
+                "warn",
+                {
+                    allowConstantExport: true,
+                },
+            ],
+            "vite-plus/prefer-vite-plus-imports": "error",
         },
-      ],
-      "vite-plus/prefer-vite-plus-imports": "error",
+        options: {
+            typeAware: true,
+            typeCheck: true,
+        },
+        jsPlugins: [
+            {
+                name: "vite-plus",
+                specifier: "vite-plus/oxlint-plugin",
+            },
+        ],
     },
-    options: {
-      typeAware: true,
-      typeCheck: true,
-    },
-    jsPlugins: [
-      {
-        name: "vite-plus",
-        specifier: "vite-plus/oxlint-plugin",
-      },
-    ],
-  },
-  plugins: lazyPlugins(() => [react()]),
+    plugins: lazyPlugins(() => [react(), tailwindcss()]),
 });
